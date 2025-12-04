@@ -1,0 +1,101 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def add_task():
+    task = entry.get().strip()
+    if task == "":
+        messagebox.showwarning("Warning", "Write a task")
+    else:
+        tasks.insert(tk.END, task)
+        entry.delete(0, tk.END)
+
+def delete_task():
+    try:
+        tasks.delete(tasks.curselection()[0])
+    except:
+        messagebox.showwarning("Warning", "Select a task")
+
+def clear_tasks():
+    if messagebox.askyesno("Confirm", "Clear all tasks?"):
+        tasks.delete(0, tk.END)
+
+bg_black = "#000000"
+red = "#E50914"
+light_red = "#B81D24"
+white = "#FFFFFF"
+
+root = tk.Tk()
+root.title("To-Do List")
+root.geometry("380x440")
+root.config(bg=bg_black)
+
+title = tk.Label(
+    root,
+    text="TO-DO LIST",
+    font=("Arial", 18, "bold"),
+    bg=bg_black,
+    fg=red
+)
+title.pack(pady=15)
+
+entry = tk.Entry(
+    root,
+    font=("Arial", 12),
+    width=30,
+    bg="#111111",
+    fg=white,
+    insertbackground=white,
+    relief="flat"
+)
+entry.pack(pady=10, ipady=6)
+
+btn_add = tk.Button(
+    root,
+    text="ADD TASK",
+    width=22,
+    bg=red,
+    fg=white,
+    relief="flat",
+    activebackground=light_red,
+    command=add_task
+)
+btn_add.pack(pady=8)
+
+tasks = tk.Listbox(
+    root,
+    width=42,
+    height=10,
+    font=("Arial", 11),
+    bg="#111111",
+    fg=white,
+    selectbackground=red,
+    relief="flat"
+)
+tasks.pack(pady=12)
+
+btn_delete = tk.Button(
+    root,
+    text="DELETE TASK",
+    width=22,
+    bg=light_red,
+    fg=white,
+    relief="flat",
+    activebackground=red,
+    command=delete_task
+)
+btn_delete.pack(pady=6)
+
+btn_clear = tk.Button(
+    root,
+    text="CLEAR ALL",
+    width=22,
+    bg="#660000",
+    fg=white,
+    relief="flat",
+    activebackground=red,
+    command=clear_tasks
+)
+btn_clear.pack(pady=6)
+
+root.bind("<Return>", lambda event: add_task())
+root.mainloop()
